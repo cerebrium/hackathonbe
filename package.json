@@ -1,7 +1,6 @@
 {
   "name": "hackathon",
   "version": "1.0.0",
-  "type:": "module",
   "description": "hackathon backend",
   "main": "index.js",
   "scripts": {
