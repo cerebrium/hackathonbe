@@ -4,6 +4,8 @@ const app = express();
 const helmet = require("helmet");
 var cors = require("cors");
 var bodyParser = require("body-parser");
+const mongoose = require("mongoose");
+const db = require("./db/database");
 var userController = require("./controllers/user/index.js");
 
 // middleware
@@ -14,6 +16,15 @@ app.use(bodyParser.json());
 app.use(express.static("backend"));
 app.use(helmet());
 app.use("/users", userController);
+
+mongoose.set("debug", true);
+
+(async () => {
+  db.connect();
+})().catch((e) => {
+  console.log(e);
+  process.exit(1);
+});
 
 // middleware ended, app getting
 app.get("/", function (req, res) {
