@@ -6,6 +6,7 @@ var cors = require("cors");
 var bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const db = require("./db/database");
+var userController = require("./controllers/user/index.js");
 
 // middleware
 app.use(cors());
@@ -14,6 +15,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(express.static("backend"));
 app.use(helmet());
+app.use("/users", userController);
 
 mongoose.set("debug", true);
 
