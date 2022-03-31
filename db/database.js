@@ -16,8 +16,6 @@ const db = {
   keepAlive: true,
   connectTimeoutMS: 45000,
   socketTimeoutMS: 0,
-  ha: true, // Make sure the high availability checks are on
-  haInterval: 5000,
 };
 
 async function connect() {
