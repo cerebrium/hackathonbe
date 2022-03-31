@@ -6,7 +6,8 @@ var cors = require("cors");
 var bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const db = require("./db/database");
-var userController = require("./controllers/user/index.js");
+const userController = require("./controllers/user/index.js");
+const heatmapController = require("./controllers/heatmap/index.js");
 
 // middleware
 app.use(cors());
@@ -16,6 +17,7 @@ app.use(bodyParser.json());
 app.use(express.static("backend"));
 app.use(helmet());
 app.use("/users", userController);
+app.use("/heatmaps/", heatmapController);
 
 mongoose.set("debug", true);
 

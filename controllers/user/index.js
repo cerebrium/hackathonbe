@@ -1,15 +1,26 @@
-var express = require("express");
-var router = express.Router();
+const express = require("express");
+const router = express.Router();
+const User = require("../../models/user");
 
-router.get("/", function (req, res) {
-  res.send("User controller");
+//get users
+router.get("/", async function (req, res) {
+  const users = await User.find();
+  res.send(users);
 });
 
-router.get("/signup", function (req, res) {
+//get user
+router.get("/user/:id", function (req, res) {
+  User.findById(id);
+  res.send("Use controller");
+});
+
+//signup user
+router.post("/signup", function (req, res) {
   res.send("Signup page");
 });
 
-router.get("/login", function (req, res) {
+//login user
+router.post("/login", function (req, res) {
   res.send("Login page");
 });
 

@@ -1,19 +1,11 @@
-import { model, Schema } from "mongoose";
-import { emailValidator } from "./validators/email-validator";
-var mongoosePaginate = require("mongoose-paginate");
-
-const options = {
-  timestamps: true,
-  toJSON: {
-    virtuals: true,
-  },
-};
+const { model, Schema } = require("mongoose");
+//const { emailValidator } = require("./validators/email-validator");
 
 var UserSchema = new Schema({
   email: {
     type: String,
     required: true,
-    validate: emailValidator,
+    //validate: emailValidator,
   },
   age: {
     type: Number,
@@ -41,9 +33,6 @@ var UserSchema = new Schema({
     type: [String],
     required: false,
   },
-  options,
 });
 
-UserSchema.plugin(mongoosePaginate);
-
-export var User = model("User", UserSchema);
+exports.User = model("User", UserSchema);
