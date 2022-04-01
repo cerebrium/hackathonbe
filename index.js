@@ -8,6 +8,7 @@ const mongoose = require("mongoose");
 const db = require("./db/database");
 const userController = require("./controllers/user/index.js");
 const heatmapController = require("./controllers/heatmap/index.js");
+const profileController = require("./controllers/profile/index.js");
 
 // middleware
 app.use(cors());
@@ -17,7 +18,8 @@ app.use(bodyParser.json());
 app.use(express.static("backend"));
 app.use(helmet());
 app.use("/users", userController);
-app.use("/heatmaps/", heatmapController);
+app.use("/heatmaps", heatmapController);
+app.use("/profiles", profileController);
 
 mongoose.set("debug", true);
 

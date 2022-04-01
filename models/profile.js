@@ -1,11 +1,9 @@
 const { model, Schema } = require("mongoose");
-//const { emailValidator } = require("./validators/email-validator");
 
-const UserSchema = new Schema({
-  email: {
+const ProfileSchema = new Schema({
+  name: {
     type: String,
     required: true,
-    //validate: emailValidator,
   },
   age: {
     type: Number,
@@ -17,9 +15,16 @@ const UserSchema = new Schema({
     type: String,
     required: true,
   },
+  job: {
+    type: String,
+    required: true,
+  },
   pictures: {
     type: [String],
-    required: true,
+    default: [
+      "https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png",
+    ],
+    required: false,
   },
   likes: {
     type: [String],
@@ -35,4 +40,4 @@ const UserSchema = new Schema({
   },
 });
 
-module.exports.User = model("User", UserSchema);
+module.exports.Profile = model("Profile", ProfileSchema);
