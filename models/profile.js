@@ -1,6 +1,10 @@
 const { model, Schema } = require("mongoose");
 
 const ProfileSchema = new Schema({
+  user: {
+    type: String,
+    required: false,
+  },
   name: {
     type: String,
     required: true,
@@ -27,6 +31,10 @@ const ProfileSchema = new Schema({
     required: false,
   },
   likes: {
+    type: [String],
+    required: false,
+  },
+  rejections: {
     type: [String],
     required: false,
   },

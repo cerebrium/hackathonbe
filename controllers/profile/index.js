@@ -2,17 +2,24 @@ const express = require("express");
 const router = express.Router();
 const { Profile } = require("../../models/profile");
 
-// get profiles
-router.get("/", async (req, res) => {
-  const profiles = await Profile.find();
+//get profiles
+router.get("/:userEmail", async (req, res) => {
+  const profiles = await Profile.find({ user: { $ne: req.params.userEmail } });
   res.send(profiles);
   return profiles;
 });
 
-// get profile
-router.get("/profile/:id", function (req, res) {
-  Profile.findById(id);
-  res.send("Use controller");
+//get profile by user email
+router.get("/profile/:userEmail", async (req, res) => {
+  const userProfile = await Profile.findOne({
+    user: req.params.userEmail,
+  }).exec();
+  res.send(userProfile);
+  if (userProfile) {
+    return userProfile;
+  } else {
+    return false;
+  }
 });
 
 // create profile
