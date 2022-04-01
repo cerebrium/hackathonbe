@@ -1,14 +1,14 @@
 var express = require("express");
 var router = express.Router();
-import { Heatmap } from "../models/heatmap";
+const { Heatmap } = require("../../models/heatmap");
 
 //get heatmaps
-router.get("/", function (req, res) {
+router.get("/", async (req, res) => {
   res.send("heatmap controller");
 });
 
 //get heatmaps by user
-router.get("/heatmaps/:userId", function (req, res) {
+router.get("/heatmaps/:userId", async (req, res) => {
   const heatmaps = await Heatmap.find({ user: req.body.userId });
   if (!heatmaps) {
     res.status(404).send("No heatmaps found");
@@ -18,7 +18,7 @@ router.get("/heatmaps/:userId", function (req, res) {
 });
 
 //get heatmaps by match
-router.get("/heatmaps/match/:userId", function (req, res) {
+router.get("/heatmaps/match/:userId", async (req, res) => {
   // Find where user matches this user && viewer matches param user
   const userId = req.body.userId;
   const viewerId = req.body.viewerId;

@@ -1,12 +1,5 @@
-import { model, Schema } from "mongoose";
+const { model, Schema } = require("mongoose");
 var mongoosePaginate = require("mongoose-paginate");
-
-const options = {
-  timestamps: true,
-  toJSON: {
-    virtuals: true,
-  },
-};
 
 var HeatmapSchema = new Schema({
   user: {
@@ -28,9 +21,8 @@ var HeatmapSchema = new Schema({
     ],
     required: true,
   },
-  options,
 });
 
 HeatmapSchema.plugin(mongoosePaginate);
 
-export var Heatmap = model("Heatmap", HeatmapSchema);
+module.exports.Heatmap = model("Heatmap", HeatmapSchema);
