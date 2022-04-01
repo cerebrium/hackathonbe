@@ -1,15 +1,16 @@
-var express = require("express");
-var router = express.Router();
+const express = require("express");
+const router = express.Router();
 const { Heatmap } = require("../../models/heatmap");
 
 //get heatmaps
 router.get("/", async (req, res) => {
-  res.send("heatmap controller");
+  const heatmaps = await Heatmap.find();
+  res.send("heatmap controller: ", heatmaps);
 });
 
 //get heatmaps by user
-router.get("/heatmaps/:userId", async (req, res) => {
-  const heatmaps = await Heatmap.find({ user: req.body.userId });
+router.get("/:userId", async (req, res) => {
+  const heatmaps = await Heatmap.find({ user: req.params.userId });
   if (!heatmaps) {
     res.status(404).send("No heatmaps found");
   } else {
@@ -18,10 +19,10 @@ router.get("/heatmaps/:userId", async (req, res) => {
 });
 
 //get heatmaps by match
-router.get("/heatmaps/match/:userId", async (req, res) => {
+router.get("/match/:userId/:viewerId", async (req, res) => {
   // Find where user matches this user && viewer matches param user
-  const userId = req.body.userId;
-  const viewerId = req.body.viewerId;
+  const userId = req.params.userId;
+  const viewerId = req.params.viewerId;
   const heatmap = await Heatmap.find({
     $and: [{ user: userId }, { viewer: viewerId }],
   });
@@ -34,14 +35,25 @@ router.get("/heatmaps/match/:userId", async (req, res) => {
 });
 
 // Save a heatmap
-router.post("/heatmaps", async (req, res) => {
-  const heatmap = new Heatmap(req.body);
-  await heatmap.save();
+router.post("/create", async (req, res) => {
+  const body = req.body;
+  try {
+    const heatmap = new Heatmap(req.body);
+    await heatmap.save();
+    res.send("saved");
+  } catch (err) {
+    res.status(400).send(err);
+  }
+});
+
+router.get("/create", async (req, res) => {
+  // const heatmap = new Heatmap(req.body);
+  // await heatmap.save();
   res.send("saved");
 });
 
 // Delete a heatmap
-router.delete("/heatmaps/:id", async (req, res) => {
+router.delete("/:id", async (req, res) => {
   try {
     await Heatmap.findByIdAndDelete(req.params.id);
     res.status(200).send("Deleted");
