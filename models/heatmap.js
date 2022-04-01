@@ -8,7 +8,7 @@ const options = {
   },
 };
 
-var UserSchema = new Schema({
+var HeatmapSchema = new Schema({
   user: {
     type: String,
     required: true,
@@ -18,12 +18,19 @@ var UserSchema = new Schema({
     required: true,
   },
   heatmap: {
-    type: [Number],
+    type: [
+      {
+        x: Number,
+        y: Number,
+        r: Number,
+        color: String,
+      },
+    ],
     required: true,
   },
   options,
 });
 
-UserSchema.plugin(mongoosePaginate);
+HeatmapSchema.plugin(mongoosePaginate);
 
-export var User = model("User", UserSchema);
+export var Heatmap = model("Heatmap", HeatmapSchema);
