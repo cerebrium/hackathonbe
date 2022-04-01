@@ -4,7 +4,11 @@ const { Profile } = require("../../models/profile");
 
 //get profiles
 router.get("/:userEmail", async (req, res) => {
-  const profiles = await Profile.find({ user: { $ne: req.params.userEmail } });
+  const profiles = await Profile.find({
+    rejections: { $nin: [req.params.userEmail] },
+    matches: { $nin: [req.params.userEmail] },
+    user: { $ne: req.params.userEmail },
+  });
   res.send(profiles);
   return profiles;
 });
@@ -34,21 +38,40 @@ router.post("/profile/like", async (req, res) => {
   //add that users email to your likes
   //check if that user has your email on their likes
   //if so then its a match
-  const query = { user: req.body.user };
-  await Profile.findOneAndUpdate(query, likes.push(req.body.likedUser));
+  const user = await Profile.findOne({ user: req.body.user }).exec();
+
+  user.likes.push(req.body.likedUser);
+  await user.save();
 
   const likedProfile = await Profile.findOne({
-    user: req.params.likedUser,
+    user: req.body.likedUser,
   }).exec();
 
-  if (likedProfile.likes.find(req.body.user)) {
-    await Profile.findOneAndUpdate(query, matches.push(req.body.likedUser));
-    await Profile.findOneAndUpdate(
-      { user: req.body.likedUser },
-      matches.push(req.body.user)
-    );
+  //match
+  if (likedProfile.likes.find((like) => like === req.body.user)) {
+    const user = await Profile.findOne({ user: req.body.user }).exec();
+    user.matches.push(req.body.likedUser);
+    await user.save();
+
+    const likedProfile = await Profile.findOne({
+      user: req.body.likedUser,
+    }).exec();
+    likedProfile.matches.push(req.body.user);
+    await likedProfile.save();
   }
-  res.send("saved");
+});
+
+// dislike profile
+router.post("/profile/dislike", async (req, res) => {
+  //add user email to rejection
+
+  const dislikedUser = await Profile.findOne({
+    user: req.body.dislikedUser,
+  }).exec();
+
+  dislikedUser.rejections.push(req.body.user);
+  await dislikedUser.save();
+  res.send("test");
 });
 
 module.exports = router;
